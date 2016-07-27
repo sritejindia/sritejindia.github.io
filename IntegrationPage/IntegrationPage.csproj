@@ -75,9 +75,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppPage.aspx" />
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppPage.aspx.cs">
+      <DependentUpon>AppPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppPage.aspx.designer.cs">
+      <DependentUpon>AppPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
