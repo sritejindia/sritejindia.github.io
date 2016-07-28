@@ -47,23 +47,92 @@
                     var complaintNbr = $("#complaintNumber").val();
                     var startDate = $("#startDate").val();
                     var endDate = $("#endDate").val();
-                    //console.log("The board name is " + boardName);
-                    //console.log("The complaint number is " + complaintNbr);
-                    //console.log("The start date is " + startDate);
-                    //console.log("The end date is " + endDate);
+        
+                    $("table#resultsTable tbody").empty();
+
+                    $.each(licenseeInformation, function (index, element) {
+                        $("table#resultsTable").append("<tr>"
+                            + "<td>" + element.actionDate + "</td>"
+                            + "<td>" + element.licenseeName + "</td>"
+                            + "<td>" + element.boardName + "</td>"
+                            + "<td>" + element.boardDecision + "</td>"
+                            + "<td>" + element.ComplaintNumber + "</td>"
+                            + "</tr>");
+                    });
                 });
-                $("#sortBy").change(function () {
-                    alert("Value is " + this.options[this.selectedIndex].value);
-                });
+
+                if ($("table#resultsTable tbody")[0].childElementCount > 0) {
+                    $("#sortBy").change(changeDropDownValues);
+                }
+
+                var changeDropDownValues = function () {
+
+                    $("table#resultsTable tbody").empty()
+
+                    switch (this.options[this.selectedIndex].value) {
+                        case "Action Date":
+                            licenseeInformation.sort(SortByActionDate);
+                            break;
+                        case "Licensee Name":
+                            licenseeInformation.sort(SortByLicenseeName);
+                            break;
+                        case "Board of Registration":
+                            licenseeInformation.sort(SortByBoardName);
+                            break;
+                        case "Board Decision":
+                            licenseeInformation.sort(SortByBoardDecision);
+                            break;
+                        case "Complaint Number":
+                            licenseeInformation.sort(SortByComplaintNbr);
+                            break;
+                        default:
+                            break;
+                    }
+
+
+
+                    $.each(licenseeInformation, function (index, element) {
+                        $("table#resultsTable").append("<tr>"
+                            + "<td>" + element.actionDate + "</td>"
+                            + "<td>" + element.licenseeName + "</td>"
+                            + "<td>" + element.boardName + "</td>"
+                            + "<td>" + element.boardDecision + "</td>"
+                            + "<td>" + element.ComplaintNumber + "</td>"
+                            + "</tr>");
+                    });
+                };
             
                 var licenseeInformation =
-                    [{ "boardName": "Board of Sanitarians", "ComplaintNumber": "14", "licenseeName": "Sritej", "actionDate": "2015/01/25", "boardDecision": "818d3db8488448f9" },
-                     { "boardName": "Board of Registration of Electricians", "ComplaintNumber": "15", "licenseeName": "Sairaj", "actionDate": "2014/02/29", "boardDecision": "855c5763bd08c8c9" },
-                     { "boardName": "Board of Social Workers", "ComplaintNumber": "16", "licenseeName": "Prakash", "actionDate": "2016/07/30", "boardDecision": "f980dcaba7b77974" }];
+                    [{ "boardName": "Board of Sanitarians", "ComplaintNumber": "4", "licenseeName": "Sritej", "actionDate": "2015/01/25", "boardDecision": "SUSPENDED" },
+                     { "boardName": "Board of Registration of Electricians", "ComplaintNumber": "215", "licenseeName": "Sairaj", "actionDate": "2014/02/29", "boardDecision": "CONVICTED" },
+                     { "boardName": "Board of Social Workers", "ComplaintNumber": "16", "licenseeName": "Prakash", "actionDate": "2016/07/30", "boardDecision": "DISCIPLINE" },
+                    { "boardName": "Board of Sanitarians", "ComplaintNumber": "2354", "licenseeName": "Sritej", "actionDate": "2015/01/25", "boardDecision": "SUSPENDED" },
+                     { "boardName": "Board of Registration of Electricians", "ComplaintNumber": "115", "licenseeName": "Sairaj", "actionDate": "2014/02/29", "boardDecision": "CONVICTED" },
+                     { "boardName": "Board of Social Workers", "ComplaintNumber": "16", "licenseeName": "Prakash", "actionDate": "2016/07/30", "boardDecision": "DISCIPLINE" },
+                    { "boardName": "Board of Sanitarians", "ComplaintNumber": "300", "licenseeName": "Sritej", "actionDate": "2015/01/25", "boardDecision": "SUSPENDED" },
+                     { "boardName": "Board of Registration of Electricians", "ComplaintNumber": "155", "licenseeName": "Sairaj", "actionDate": "2014/02/29", "boardDecision": "CONVICTED" },
+                     { "boardName": "Board of Social Workers", "ComplaintNumber": "16", "licenseeName": "Prakash", "actionDate": "2016/07/30", "boardDecision": "DISCIPLINE" }, ];
 
                 function SortByLicenseeName(x, y) {
                     return ((x.licenseeName == y.licenseeName) ? 0 : ((x.licenseeName > y.licenseeName) ? 1 : -1));
                 }
+
+                function SortByBoardName(x, y) {
+                    return ((x.boardName == y.boardName) ? 0 : ((x.boardName > y.boardName) ? 1 : -1));
+                }
+
+                function SortByComplaintNbr(x, y) {
+                    return x.ComplaintNumber - y.ComplaintNumber;
+                }
+
+                function SortByBoardDecision(x, y) {
+                    return ((x.boardDecision == y.boardDecision) ? 0 : ((x.boardDecision > y.boardDecision) ? 1 : -1));
+                }
+
+                function SortByActionDate(x, y) {
+                    return new Date($(x).actionDate) < new Date($(y).actionDate);
+                }               
+
             });
         </script>
     </section>
@@ -71,8 +140,12 @@
 
         <label for="sortBy">Sort By: </label>
         <select id="sortBy">
+                
             <option value="Licensee Name">Licensee Name</option>
             <option value="Complaint Number">Complaint Number</option>
+            <option value="Board of Registration">Board of Registration</option>
+            <option value="Board Decision">Board Decision</option>
+            <option value="Action Date">Action Date</option>
         </select>
 
         <table id="resultsTable">
@@ -86,6 +159,7 @@
                     <td>Complaint Number</td>
                 </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </section>
 </body>
